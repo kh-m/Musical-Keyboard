@@ -6,11 +6,26 @@
     <script type="text/javascript" src="paper-full.js"></script>
     <link rel="stylesheet" type="text/css" href="circles.css">
     <script type="text/paperscript" canvas="myCanvas">
+        var circles = [];
+        
+        // Adds a random circle on display and adds it to the circles array
         function onKeyDown(event) {
             var maxPoint = new Point(view.size.width, view.size.height);
             var randomPoint = Point.random();
-            var point = maxPoint * randomPoint
-            new Path.Circle(point, 10).fillColor = 'yellow';
+            var point = maxPoint * randomPoint;
+            var newCircle = new Path.Circle(point, 500);
+            newCircle.fillColor = 'orange';
+            circles.push(newCircle);
+        }
+
+        // Function that loops at each frame to do the following for every existing circle in circles array:
+        // * adds 1 to its hue
+        // * scales its size by 90%
+        function onFrame(event) {
+            for(var i=0; i<circles.length; i++) {
+                circles[i].fillColor.hue += 1;
+                circles[i].scale(0.9);
+            }
         }
 
     </script>
