@@ -7,21 +7,45 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.15/howler.js"></script>
     <link rel="stylesheet" type="text/css" href="circles.css">
     <script type="text/paperscript" canvas="myCanvas">
-        var sound = new Howl({
-            src: ['sounds/bubbles.mp3']
-          });
-        
+
+        // Object with corresponding values for each key pressed
+        var keyData = {
+            a: {
+                color: 'purple',
+                sound: new Howl({
+                    src: ['sounds/bubbles.mp3']
+                  })
+            },
+            s: {
+                color: 'green',
+                sound: new Howl({
+                    src: ['sounds/clay.mp3']
+                  })
+            },
+            d: {
+                color: 'yellow',
+                sound: new Howl({
+                    src: ['sounds/confetti.mp3']
+                  })
+            }
+        }
+       
         var circles = [];
         
         // Adds a random circle on display and adds it to the circles array
         function onKeyDown(event) {
-            sound.play();
-            var maxPoint = new Point(view.size.width, view.size.height);
-            var randomPoint = Point.random();
-            var point = maxPoint * randomPoint;
-            var newCircle = new Path.Circle(point, 500);
-            newCircle.fillColor = 'orange';
-            circles.push(newCircle);
+            if(keyData[event.key]) {
+                // Creates a circle at a random point on screen (4 lines)
+                var maxPoint = new Point(view.size.width, view.size.height);
+                var randomPoint = Point.random();
+                var point = maxPoint * randomPoint;
+                var newCircle = new Path.Circle(point, 500);
+                // Gives circle a color & sound from keyData values (2 lines)
+                newCircle.fillColor = keyData[event.key].color;
+                keyData[event.key].sound.play();
+                
+                circles.push(newCircle);
+            }
         }
 
         // Function that loops at each frame to do the following for every existing circle in circles array:
